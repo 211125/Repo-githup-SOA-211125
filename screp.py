@@ -1,8 +1,23 @@
-import secrets
+import asyncio
+import websockets
 
-def generate_secret_key():
-    return secrets.token_hex(32)
+async def receive_notifications():
+    uri = "ws://10.11.1.100:8000/ws"  # Reemplaza esto con la dirección de tu servidor FastAPI
 
-SECRET_KEY = generate_secret_key()
+    async with websockets.connect(uri) as websocket:
+        while True:
+            message = await websocket.recv()
+            print(f"Received notification: {message}")
 
-print(generate_secret_key())
+# Ejecutar la función para recibir notificaciones en un bucle de eventos
+async def main():
+    while True:
+        try:
+            await receive_notifications()
+        except websockets.ConnectionClosed:
+            print("La conexión WebSocket se cerró. Intentando reconectar en 5 segundos...")
+            await asyncio.sleep(5)
+
+# Ejecutar el bucle de eventos principal
+if __name__ == "__main__":
+    asyncio.run(main())

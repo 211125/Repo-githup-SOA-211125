@@ -1,27 +1,18 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
-class UserBase(BaseModel):
-    name: str 
-    email: str
-    password: str
-    phone: str
-    address: str
-    state: str
-    city: str
-    calle: str
-    postal_code: str
-    interior_number: str
-    tree: int = Field(None)
+class TaskBase(BaseModel):
+    title: str
+    description: str
 
-class UserCreate(UserBase):
-    tree: int = Field(None)
+class TaskCreate(TaskBase):
+    pass
 
-class User(UserBase):
+class TaskUpdate(TaskBase):
+    pass
+
+class TaskRead(TaskBase):
     id: int
+    completed: bool  
 
     class Config:
         from_attributes = True
-
-class UserLogin(BaseModel):
-    email: str
-    password: str

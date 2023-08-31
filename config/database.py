@@ -1,30 +1,22 @@
-from sqlalchemy import create_engine, Boolean, Column, Integer, String
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from model.model import Base
+from sqlalchemy.orm import Session
 
-SQLALCHEMY_DATABASE_URL = "postgresql://angelito:211125@localhost:5432/movil"
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+# Crea una instancia de 'Engine'
+engine = create_engine('postgresql://angelito:211125@localhost:5432/movil')
 
-class User(Base):
-    __tablename__ = "users"
+# Crea todas las tablas
+Base.metadata.create_all(engine)
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    password = Column(String)
-    phone = Column(String)
-    address = Column(String)
-    state = Column(String)
-    city = Column(String)
-    calle = Column(String)
-    postal_code = Column(String)
-    interior_number = Column(String)
-    tree = Column(Integer)
+# Definición de la función SessionLocal
+SessionLocal = sessionmaker(bind=engine)
 
-Base.metadata.create_all(bind=engine)
