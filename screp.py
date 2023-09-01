@@ -2,14 +2,12 @@ import asyncio
 import websockets
 
 async def receive_notifications():
-    uri = "ws://10.11.1.100:8000/ws"  # Reemplaza esto con la dirección de tu servidor FastAPI
-
+    uri = "ws://10.11.1.100:8000/ws" 
     async with websockets.connect(uri) as websocket:
         while True:
             message = await websocket.recv()
             print(f"Received notification: {message}")
 
-# Ejecutar la función para recibir notificaciones en un bucle de eventos
 async def main():
     while True:
         try:

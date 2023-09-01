@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class TaskBase(BaseModel):
     title: str
@@ -13,6 +14,6 @@ class TaskUpdate(TaskBase):
 class TaskRead(TaskBase):
     id: int
     completed: bool  
-
+    created_at: datetime
     class Config:
         from_attributes = True
